@@ -1,0 +1,9 @@
+deployAs:
+  - name: inventory-import
+    applicationType: service
+    endpoint: /
+    configuration:
+      standardConfiguration:
+        - key: CTP_PROJECT_KEY
+          description: commercetools project key
+          required: true
