@@ -1,8 +1,11 @@
 import { expect, describe, afterAll, it } from '@jest/globals';
 import request from 'supertest';
 import server from '../../src/index.js';
-import {HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_SUCCESS_ACCEPTED} from '../../src/constants/http.status.constants.js';
-import { createApiRoot } from "../../src/clients/create.client.js";
+import {
+  HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_SUCCESS_ACCEPTED,
+} from '../../src/constants/http.status.constants.js';
+import { createApiRoot } from '../../src/clients/create.client.js';
 import * as inventoryRequestPayload from '../../resources/inventoryImportRequest.json';
 
 /** Reminder : Please put mandatory environment variables in the settings of your github repository **/
@@ -38,19 +41,20 @@ describe('Test inventory.import.controller.js', () => {
   // Disabled because Needs Environment variables and update the inventoryEntry from your CTP project
   xit(`Test against CTP Project`, async () => {
     let response = {};
-    const {  body: inventoryRequestPayload } = await createApiRoot()
-        .inventory()
-        .withId({ID: '1234'})
-        .get()
-        .execute();
+    const { body: inventoryRequestPayload } = await createApiRoot()
+      .inventory()
+      .withId({ ID: '1234' })
+      .get()
+      .execute();
 
-    response = await request(server).post(`/inventory`).send(inventoryRequestPayload);
+    response = await request(server)
+      .post(`/inventory`)
+      .send(inventoryRequestPayload);
 
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(HTTP_STATUS_SUCCESS_ACCEPTED);
-    expect(response.body.message).toEqual("successfully created/updated");
+    expect(response.body.message).toEqual('successfully created/updated');
   });
-
 
   afterAll(() => {
     // Enable the function below to close the application on server once all test cases are executed.
