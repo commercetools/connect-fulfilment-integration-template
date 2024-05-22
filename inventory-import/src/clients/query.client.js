@@ -12,45 +12,30 @@ export async function getInventoryEntryByKey(key) {
 }
 
 export async function createInventoryEntry(inventoryEntryToBeCreated) {
+  const request = {
+    key: inventoryEntryToBeCreated.key,
+    sku: inventoryEntryToBeCreated.sku,
+    quantityOnStock: inventoryEntryToBeCreated.quantityOnStock,
+    supplyChannel: inventoryEntryToBeCreated.supplyChannel,
+  };
 
-    const request  = {
-        key: inventoryEntryToBeCreated.key,
-        sku: inventoryEntryToBeCreated.sku,
-        quantityOnStock: inventoryEntryToBeCreated.quantityOnStock,
-        supplyChannel: inventoryEntryToBeCreated.supplyChannel
-    };
-
-    let inventoryCreated;
-    try {
-        inventoryCreated = await createApiRoot()
-            .inventory()
-            .post({ body: request })
-            .execute();
-    } catch(e) {
-         throw e;
-    }
-    return inventoryCreated;
+  return await createApiRoot().inventory().post({ body: request }).execute();
 }
 
 export async function updateInventoryEntry(inventoryEntryToBeUpdated) {
+  const actionItem = {
+    version: inventoryEntryToBeUpdated.version,
+    actions: [
+      {
+        action: 'addQuantity',
+        quantity: inventoryEntryToBeUpdated.quantity,
+      },
+    ],
+  };
 
-    const actionItem  = {
-        version: inventoryEntryToBeUpdated.version,
-        actions: [{
-            action: "addQuantity",
-            quantity: inventoryEntryToBeUpdated.quantity
-        }]
-    };
-
-    let inventoryUpdated;
-    try {
-        inventoryUpdated = await createApiRoot()
-            .inventory()
-            .withId(inventoryEntryToBeUpdated.id)
-            .post({ body: actionItem })
-            .execute();
-    } catch(e) {
-        throw e;
-    }
-    return inventoryUpdated;
+  return await createApiRoot()
+    .inventory()
+    .withId(inventoryEntryToBeUpdated.id)
+    .post({ body: actionItem })
+    .execute();
 }
