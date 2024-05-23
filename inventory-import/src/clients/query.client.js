@@ -22,13 +22,16 @@ export async function createInventoryEntry(inventoryEntryToBeCreated) {
   return await createApiRoot().inventory().post({ body: request }).execute();
 }
 
-export async function updateInventoryEntry(inventoryEntryToBeUpdated) {
+export async function updateInventoryEntry(
+  inventoryEntryToBeUpdated,
+  inventoryRequest
+) {
   const actionItem = {
     version: inventoryEntryToBeUpdated.version,
     actions: [
       {
         action: 'addQuantity',
-        quantity: inventoryEntryToBeUpdated.quantity,
+        quantity: inventoryRequest.quantity,
       },
     ],
   };
