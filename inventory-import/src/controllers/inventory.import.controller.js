@@ -12,37 +12,19 @@ import {
   updateInventoryEntry,
 } from '../clients/query.client.js';
 
-async function syncInventoryEntry(key, inventoryRequest, response) {
+async function syncInventoryEntry(key, inventoryRequest) {
   let inventoryToBeSynced = await getInventoryEntryByKey(key);
 
   if (inventoryToBeSynced) {
     logger.info(
       `Inventory found: ${inventoryToBeSynced.key}, updating the existing inventory.`
     );
-
-    try {
-      await updateInventoryEntry(inventoryToBeSynced);
-    } catch (err) {
-      logger.error(err);
-      if (err.statusCode) return response.status(err.statusCode).send(err);
-      return response.status(HTTP_STATUS_SERVER_ERROR).send(err);
-    }
+    await updateInventoryEntry(inventoryToBeSynced, inventoryRequest);
   } else {
     logger.info(`Creating new Inventory entry`);
-
-    await createInventoryEntry(inventoryRequest).catch((error) => {
-      throw new CustomError(
-        HTTP_STATUS_BAD_REQUEST,
-        `Bad request: ${error.message}`,
-        error
-      );
-    });
+    await createInventoryEntry(inventoryRequest);
   }
   logger.info(`Inventory(s) has been added/updated.`);
-
-  return response
-    .status(HTTP_STATUS_SUCCESS_ACCEPTED)
-    .send({ message: 'successfully created/updated' });
 }
 
 function getInvalidRequestResponse(response) {
@@ -75,5 +57,18 @@ export const inventoryHandler = async (request, response) => {
     }
   }
 
-  return await syncInventoryEntry(key, inventoryRequest, response);
+  try {
+    await syncInventoryEntry(key, inventoryRequest, response);
+  } catch (err) {
+    const error = new CustomError(
+      HTTP_STATUS_SERVER_ERROR,
+      `Couldn't create/update inventory: ${err.message}`,
+      err
+    );
+    return response.status(err.statusCode).send(error);
+  }
+
+  return response
+    .status(HTTP_STATUS_SUCCESS_ACCEPTED)
+    .send({ message: 'successfully created/updated' });
 };
