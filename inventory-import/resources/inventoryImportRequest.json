@@ -1,0 +1,9 @@
+{
+  "key": "testInventoryEntryKey",
+  "sku": "testProductSku",
+  "quantityOnStock": 4,
+  "supplyChannel": {
+    "id": "channelId",
+    "type": "channel"
+  }
+}
