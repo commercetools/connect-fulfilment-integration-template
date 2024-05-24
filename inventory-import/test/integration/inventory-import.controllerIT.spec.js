@@ -5,7 +5,6 @@ import {
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_SUCCESS_ACCEPTED,
 } from '../../src/constants/http.status.constants.js';
-import { createApiRoot } from '../../src/clients/create.client.js';
 import * as inventoryRequestPayload from '../../resources/inventoryImportRequest.json';
 
 /** Reminder : Please put mandatory environment variables in the settings of your github repository **/
