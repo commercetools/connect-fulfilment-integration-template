@@ -65,7 +65,7 @@ export const inventoryHandler = async (request, response) => {
       `Couldn't create/update inventory: ${err.message}`,
       err
     );
-    return response.status(err.statusCode).send(error);
+    return response.status(error.statusCode).send(error);
   }
 
   return response
