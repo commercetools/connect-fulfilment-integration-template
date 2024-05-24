@@ -4,7 +4,7 @@ export async function getInventoryEntryByKey(key) {
   return await createApiRoot()
     .inventory()
     .withKey({
-      ID: Buffer.from(key).toString(),
+      key: Buffer.from(key).toString(),
     })
     .get()
     .execute()
@@ -22,23 +22,47 @@ export async function createInventoryEntry(inventoryEntryToBeCreated) {
   return await createApiRoot().inventory().post({ body: request }).execute();
 }
 
-export async function updateInventoryEntry(
-  inventoryEntryToBeUpdated,
-  inventoryRequest
-) {
+async function inventoryEntryUpdate(id, inventoryEntryVersion, inventoryRequest) {
   const actionItem = {
-    version: inventoryEntryToBeUpdated.version,
+    version: inventoryEntryVersion,
     actions: [
       {
-        action: 'addQuantity',
-        quantity: inventoryRequest.quantity,
+        action: 'changeQuantity',
+        quantity: inventoryRequest.quantityOnStock,
       },
     ],
   };
 
   return await createApiRoot()
-    .inventory()
-    .withId(inventoryEntryToBeUpdated.id)
-    .post({ body: actionItem })
-    .execute();
+      .inventory()
+      .withId({
+        ID: Buffer.from(id).toString(),
+      })
+      .post({body: actionItem})
+      .execute();
+}
+
+export async function updateInventoryEntry(
+  inventoryEntryToBeUpdated,
+  inventoryRequest
+) {
+
+  const maxRetries = 6;
+  let inventoryEntryVersion = inventoryEntryToBeUpdated.version;
+  let err;
+  for (let retries = 0; retries < maxRetries; retries++) {
+    try {
+      return await inventoryEntryUpdate(inventoryEntryToBeUpdated.id, inventoryEntryVersion, inventoryRequest);
+    } catch (e) {
+      err = e;
+      if (err.statusCode === 409) {
+        const inventoryEntry = await getInventoryEntryByKey(inventoryEntryToBeUpdated.key);
+        inventoryEntryVersion = inventoryEntry.version;
+        retries++;
+      } else {
+        throw e;
+      }
+    }
+  }
+  throw err;
 }
