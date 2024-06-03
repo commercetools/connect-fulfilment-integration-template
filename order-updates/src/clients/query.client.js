@@ -4,7 +4,7 @@ export async function getOrderById(id) {
   return await createApiRoot()
     .orders()
     .withId({
-      key: Buffer.from(id).toString(),
+      ID: Buffer.from(id).toString(),
     })
     .get()
     .execute()
