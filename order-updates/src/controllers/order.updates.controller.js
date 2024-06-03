@@ -5,8 +5,11 @@ import {
   HTTP_STATUS_SUCCESS_ACCEPTED,
 } from '../constants/http.status.constants.js';
 import CustomError from '../errors/custom.error.js';
-import {updateOrderForDeliveryInfo, getOrderById} from "../clients/query.client.js";
-import {logger} from "../utils/logger.utils.js";
+import {
+  updateOrderForDeliveryInfo,
+  getOrderById,
+} from '../clients/query.client.js';
+import { logger } from '../utils/logger.utils.js';
 
 function getInvalidRequestResponse(response) {
   return response
@@ -23,11 +26,13 @@ async function syncOrderUpdates(orderUpdatesRequest) {
   if (orderUpdatesRequest.deliveryInfo) {
     const orderToUpdate = await getOrderById(orderUpdatesRequest.id);
     await updateOrderForDeliveryInfo(orderUpdatesRequest, orderToUpdate);
-    if(orderUpdatesRequest.deliveryInfo.shipmentState === 'Shipped') {
+    if (orderUpdatesRequest.deliveryInfo.shipmentState === 'Shipped') {
       //TODO: When the ShipmentState is 'Shipped' then call Checkout Payments API to capture the money
       // [Checkout Payments API](https://docs.commercetools.com/checkout/payments-api#paymentoperation)
     }
-    logger.info(`Order updated: Added DeliveryInfo and updated Shipment status.`);
+    logger.info(
+      `Order updated: Added DeliveryInfo and updated Shipment status.`
+    );
   } else {
     // TODO: When this return is triggered, Call Checkout Payments API to do a payment refund
     //  [Checkout Payments API](https://docs.commercetools.com/checkout/payments-api#paymentoperation)
@@ -42,7 +47,10 @@ export const orderUpdatesHandler = async (request, response) => {
 
   let id = orderUpdatesRequest.orderId;
   let key = orderUpdatesRequest.orderKey;
-  if ((_.isEmpty(id) && _.isEmpty(key)) || (!(orderUpdatesRequest.deliveryInfo || orderUpdatesRequest.returnInfo))) {
+  if (
+    (_.isEmpty(id) && _.isEmpty(key)) ||
+    !(orderUpdatesRequest.deliveryInfo || orderUpdatesRequest.returnInfo)
+  ) {
     return getInvalidRequestResponse(response);
   }
 

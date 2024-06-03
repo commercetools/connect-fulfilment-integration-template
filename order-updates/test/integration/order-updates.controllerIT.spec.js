@@ -5,7 +5,7 @@ import {
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_SUCCESS_ACCEPTED,
 } from '../../src/constants/http.status.constants.js';
-import { createApiRoot } from "../../src/clients/create.client.js";
+import { createApiRoot } from '../../src/clients/create.client.js';
 
 /** Reminder : Please put mandatory environment variables in the settings of your github repository **/
 describe('Test order.updates.controller.js', () => {
@@ -30,7 +30,11 @@ describe('Test order.updates.controller.js', () => {
 
   it(`When payload body exists without delivery and return Information in the request, it should returns 400 http status`, async () => {
     let response = {};
-    let payload = {"orderId": "id", "orderKey": "key", "orderNumber" : "orderNumber" };
+    let payload = {
+      orderId: 'id',
+      orderKey: 'key',
+      orderNumber: 'orderNumber',
+    };
     response = await request(server).post(`/order-updates`).send(payload);
 
     expect(response).toBeDefined();
@@ -39,7 +43,7 @@ describe('Test order.updates.controller.js', () => {
 
   it(`When payload body exists without order information in the request, it should returns 400 http status`, async () => {
     let response = {};
-    let payload = {"deliveryInfo":{ "key": ""}};
+    let payload = { deliveryInfo: { key: '' } };
     response = await request(server).post(`/order-updates`).send(payload);
 
     expect(response).toBeDefined();
@@ -50,10 +54,9 @@ describe('Test order.updates.controller.js', () => {
   xit(`Test against CTP Project`, async () => {
     let response = {};
     const { body: orderUpdatesRequestPayload } = await createApiRoot()
-        .orders
-        .withId({ ID: '1234' })
-        .get()
-        .execute();
+      .orders.withId({ ID: '1234' })
+      .get()
+      .execute();
 
     response = await request(server)
       .post(`/order-updates`)
