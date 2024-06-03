@@ -6,7 +6,7 @@ import configUtils from '../utils/config.util.js';
 export const getAuthMiddlewareOptions = () => {
   const config = configUtils.readConfiguration();
   return {
-    host: `https://auth.${config.region}.commercetools.com`,
+    host: config.authUrl,
     projectKey: config.projectKey,
     credentials: {
       clientId: config.clientId,
