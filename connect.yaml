@@ -18,6 +18,12 @@ deployAs:
           description: commercetools API URL
           required: true
           default: https://api.europe-west1.gcp.commercetools.com
+        - key: CTP_REGION
+          description: region of commercetools composable commerce project
+          required: false
+        - key: CTP_SCOPE
+          description: commercetools client scope
+          required: false
       securedConfiguration:
         - key: CTP_CLIENT_SECRET
           description: commercetools client secret
@@ -41,6 +47,12 @@ deployAs:
           description: commercetools API URL
           required: true
           default: https://api.europe-west1.gcp.commercetools.com
+        - key: CTP_REGION
+          description: region of commercetools composable commerce project
+          required: false
+        - key: CTP_SCOPE
+          description: commercetools client scope
+          required: false
       securedConfiguration:
         - key: CTP_CLIENT_SECRET
           description: commercetools client secret
