@@ -19,35 +19,38 @@ async function updateOrder(id, orderVersion, orderUpdatesRequest) {
       {
         action: 'addDelivery',
         items: orderUpdatesRequest.items,
-        parcels: orderUpdatesRequest.parcels
+        parcels: orderUpdatesRequest.parcels,
       },
       {
         action: 'changeShipmentState',
-        shipmentState: orderUpdatesRequest.shipmentState
-      }
+        shipmentState: orderUpdatesRequest.shipmentState,
+      },
     ],
   };
 
   return await createApiRoot()
-      .orders()
-      .withId({
-        ID: Buffer.from(id).toString(),
-      })
-      .post({body: actionItem})
-      .execute();
+    .orders()
+    .withId({
+      ID: Buffer.from(id).toString(),
+    })
+    .post({ body: actionItem })
+    .execute();
 }
 
 export async function updateOrderForDeliveryInfo(
-    orderUpdatesRequest,
-    orderToUpdate
+  orderUpdatesRequest,
+  orderToUpdate
 ) {
-
   const maxRetries = 6;
   let orderVersion = orderToUpdate.version;
   let err;
   for (let retries = 0; retries < maxRetries; retries++) {
     try {
-      return await updateOrder(orderToUpdate.id, orderVersion, orderUpdatesRequest);
+      return await updateOrder(
+        orderToUpdate.id,
+        orderVersion,
+        orderUpdatesRequest
+      );
     } catch (e) {
       err = e;
       if (err.statusCode === 409) {
