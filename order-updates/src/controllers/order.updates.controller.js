@@ -60,7 +60,7 @@ export const orderUpdatesHandler = async (request, response) => {
   try {
     await syncOrderUpdates(orderUpdatesRequest);
   } catch (err) {
-    logger.info(`Couldn't update order, Error: ${err}`);
+    logger.error(`Couldn't update order, Error: ${err}`);
     const error = new CustomError(
       HTTP_STATUS_SERVER_ERROR,
       `Couldn't update Order: ${err.message}`,
