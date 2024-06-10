@@ -16,8 +16,6 @@ function readConfiguration() {
     projectKey: process.env.CTP_PROJECT_KEY,
     scope: process.env.CTP_SCOPE,
     region: process.env.CTP_REGION,
-    authUrl: process.env.CTP_AUTH_URL,
-    apiUrl: process.env.CTP_AUTH_URL,
   };
 
   const validationErrors = getValidateMessages(envValidators, envVars);
