@@ -1,0 +1,24 @@
+{
+  "orderId": "id",
+  "orderKey": "key",
+  "orderNumber" : "" ,
+  "deliveryInfo": {
+    "shipmentState": "shipmentState" ,
+    "items": [
+      {
+        "id": "itemId",
+        "quantity": 4
+      }
+    ],
+    "parcels": [
+      {
+        "key": "parcelKey",
+        "trackingData": {
+          "trackingId": "trackingId",
+          "provider": "providerName",
+          "carrier": "carrierName"
+        }
+      }
+    ]
+  }
+}
