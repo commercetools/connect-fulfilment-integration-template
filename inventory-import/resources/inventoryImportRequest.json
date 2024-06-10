@@ -4,6 +4,6 @@
   "quantityOnStock": 4,
   "supplyChannel": {
     "id": "channelId",
-    "type": "channel"
+    "typeId": "channel"
   }
 }
