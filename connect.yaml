@@ -42,7 +42,7 @@ deployAs:
           description: commercetools client secret
           required: true
   - name: product-export
-    applicationType: service
+    applicationType: event
     endpoint: /product-export
     configuration:
       standardConfiguration:
