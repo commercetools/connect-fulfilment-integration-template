@@ -1,17 +1,17 @@
-const CUSTOMER_CREATE_SUBSCRIPTION_KEY = 'your-subscription';
+const PRODUCT_PUBLISH_SUBSCRIPTION_KEY = 'your-subscription';
 
-export async function createChangedProductSubscription(
+export async function createPublishedProductSubscription(
   apiRoot,
   topicName,
   projectId
 ) {
-  await deleteChangedProductSubscription(apiRoot);
+  await deletePublishedProductSubscription(apiRoot);
 
   await apiRoot
     .subscriptions()
     .post({
       body: {
-        key: CUSTOMER_CREATE_SUBSCRIPTION_KEY,
+        key: PRODUCT_PUBLISH_SUBSCRIPTION_KEY,
         destination: {
           type: 'GoogleCloudPubSub',
           topic: topicName,
@@ -20,7 +20,7 @@ export async function createChangedProductSubscription(
         messages: [
           {
             resourceTypeId: 'product',
-            types: ['ProductUpdated'],
+            types: ['ProductPublished'],
           },
         ],
       },
@@ -28,14 +28,14 @@ export async function createChangedProductSubscription(
     .execute();
 }
 
-export async function deleteChangedProductSubscription(apiRoot) {
+export async function deletePublishedProductSubscription(apiRoot) {
   const {
     body: { results: subscriptions },
   } = await apiRoot
     .subscriptions()
     .get({
       queryArgs: {
-        where: `key = "${CUSTOMER_CREATE_SUBSCRIPTION_KEY}"`,
+        where: `key = "${PRODUCT_PUBLISH_SUBSCRIPTION_KEY}"`,
       },
     })
     .execute();
@@ -45,7 +45,7 @@ export async function deleteChangedProductSubscription(apiRoot) {
 
     await apiRoot
       .subscriptions()
-      .withKey({ key: CUSTOMER_CREATE_SUBSCRIPTION_KEY })
+      .withKey({ key: PRODUCT_PUBLISH_SUBSCRIPTION_KEY })
       .delete({
         queryArgs: {
           version: subscription.version,
