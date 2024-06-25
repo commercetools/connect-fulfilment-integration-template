@@ -11,11 +11,11 @@ import { getValidateMessages } from '../validators/helpers.validators.js';
 
 function readConfiguration() {
   const envVars = {
-    clientId: process.env.CTP_CLIENT_ID || 'e948zLoPYRG4AYIXVdGUMsk5',
-    clientSecret: process.env.CTP_CLIENT_SECRET || 'a1JBPoapiphtjNLvaXl7KewlmI7bpkB-',
-    projectKey: process.env.CTP_PROJECT_KEY || 'payment-integration',
-    scope: process.env.CTP_SCOPE || 'manage_project:payment-integration',
-    region: process.env.CTP_REGION || 'europe-west1.gcp',
+    clientId: process.env.CTP_CLIENT_ID,
+    clientSecret: process.env.CTP_CLIENT_SECRET,
+    projectKey: process.env.CTP_PROJECT_KEY,
+    scope: process.env.CTP_SCOPE,
+    region: process.env.CTP_REGION,
   };
 
   const validationErrors = getValidateMessages(envValidators, envVars);
