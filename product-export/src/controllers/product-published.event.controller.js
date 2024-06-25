@@ -1,8 +1,11 @@
 import { logger } from '../utils/logger.utils.js';
-import CustomError from "../errors/custom.error.js";
-import {HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_SUCCESS_ACCEPTED} from "../constants/http.status.constants.js";
-import {decodeToJson} from "../utils/decoder.utils.js";
-import {getMessageById} from "../clients/messages.query.client.js";
+import CustomError from '../errors/custom.error.js';
+import {
+  HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_SUCCESS_ACCEPTED,
+} from '../constants/http.status.constants.js';
+import { decodeToJson } from '../utils/decoder.utils.js';
+import { getMessageById } from '../clients/messages.query.client.js';
 
 export const productPublishedHandler = async (request, response) => {
   try {
@@ -10,16 +13,16 @@ export const productPublishedHandler = async (request, response) => {
     if (!request.body) {
       logger.error('Missing request body.');
       throw new CustomError(
-          HTTP_STATUS_BAD_REQUEST,
-          'Bad request: No Pub/Sub message was received'
+        HTTP_STATUS_BAD_REQUEST,
+        'Bad request: No Pub/Sub message was received'
       );
     }
     // Check if the body comes in a message
     if (!request.body.message || !request.body.message.data) {
       logger.error('Missing message data in incoming message');
       throw new CustomError(
-          HTTP_STATUS_BAD_REQUEST,
-          'Bad request: No message data in incoming message'
+        HTTP_STATUS_BAD_REQUEST,
+        'Bad request: No message data in incoming message'
       );
     }
 
@@ -40,8 +43,8 @@ export const productPublishedHandler = async (request, response) => {
 
     if (message.type !== 'productPublished') {
       throw new CustomError(
-          HTTP_STATUS_SUCCESS_ACCEPTED,
-          'Message type is not supported'
+        HTTP_STATUS_SUCCESS_ACCEPTED,
+        'Message type is not supported'
       );
     }
 
@@ -79,7 +82,7 @@ export const productPublishedHandler = async (request, response) => {
     //  call appropriate 3rd party methods.
 
     logger.info(
-        `Process product published event id: ${messageData.id} product name: ${productProjectionsData.name}`
+      `Process product published event id: ${messageData.id} product name: ${productProjectionsData.name}`
     );
     response.status(200).send();
   } catch (err) {
