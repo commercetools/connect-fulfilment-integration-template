@@ -1,5 +1,5 @@
 {
-  "name": "incremental-updater",
+  "name": "order-export",
   "version": "1.0.0",
   "type": "module",
   "main": "src/index.js",

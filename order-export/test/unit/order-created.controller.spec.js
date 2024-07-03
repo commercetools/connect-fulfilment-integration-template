@@ -4,7 +4,7 @@ import { HTTP_STATUS_BAD_REQUEST } from '../../src/constants/http.status.constan
 import request from 'supertest';
 import server from '../../src/index.js';
 
-describe('inventory-import.controller.spec', () => {
+describe('order-created.controller.spec', () => {
   it(`should return 400 HTTP status when message data is missing in incoming request.`, async () => {
     const dummyConfig = {
       clientId: 'dummy-ctp-client-id',
