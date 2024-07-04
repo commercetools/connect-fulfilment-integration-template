@@ -1,4 +1,4 @@
-const CUSTOMER_CREATE_SUBSCRIPTION_KEY = 'your-subscription';
+const ORDER_EXPORT_SUBSCRIPTION = 'your-subscription';
 
 export async function createChangedStoreSubscription(
   apiRoot,
@@ -11,7 +11,7 @@ export async function createChangedStoreSubscription(
     .subscriptions()
     .post({
       body: {
-        key: CUSTOMER_CREATE_SUBSCRIPTION_KEY,
+        key: ORDER_EXPORT_SUBSCRIPTION,
         destination: {
           type: 'GoogleCloudPubSub',
           topic: topicName,
@@ -35,7 +35,7 @@ export async function deleteChangedStoreSubscription(apiRoot) {
     .subscriptions()
     .get({
       queryArgs: {
-        where: `key = "${CUSTOMER_CREATE_SUBSCRIPTION_KEY}"`,
+        where: `key = "${ORDER_EXPORT_SUBSCRIPTION}"`,
       },
     })
     .execute();
@@ -45,7 +45,7 @@ export async function deleteChangedStoreSubscription(apiRoot) {
 
     await apiRoot
       .subscriptions()
-      .withKey({ key: CUSTOMER_CREATE_SUBSCRIPTION_KEY })
+      .withKey({ key: ORDER_EXPORT_SUBSCRIPTION })
       .delete({
         queryArgs: {
           version: subscription.version,
