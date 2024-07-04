@@ -1,10 +1,10 @@
 import { createApiRoot } from '../clients/create.client.js';
 
-import { deleteChangedStoreSubscription } from './actions.js';
+import { deleteOrderSubscription } from './actions.js';
 
 async function preUndeploy() {
   const apiRoot = createApiRoot();
-  await deleteChangedStoreSubscription(apiRoot);
+  await deleteOrderSubscription(apiRoot);
 }
 
 async function run() {
