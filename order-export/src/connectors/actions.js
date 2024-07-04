@@ -1,10 +1,6 @@
 const ORDER_EXPORT_SUBSCRIPTION = 'your-subscription';
 
-export async function createOrderSubscription(
-  apiRoot,
-  topicName,
-  projectId
-) {
+export async function createOrderSubscription(apiRoot, topicName, projectId) {
   await deleteOrderSubscription(apiRoot);
 
   await apiRoot
