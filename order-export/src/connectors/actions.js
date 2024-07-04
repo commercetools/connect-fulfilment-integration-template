@@ -1,11 +1,11 @@
 const ORDER_EXPORT_SUBSCRIPTION = 'your-subscription';
 
-export async function createChangedStoreSubscription(
+export async function createOrderSubscription(
   apiRoot,
   topicName,
   projectId
 ) {
-  await deleteChangedStoreSubscription(apiRoot);
+  await deleteOrderSubscription(apiRoot);
 
   await apiRoot
     .subscriptions()
@@ -28,7 +28,7 @@ export async function createChangedStoreSubscription(
     .execute();
 }
 
-export async function deleteChangedStoreSubscription(apiRoot) {
+export async function deleteOrderSubscription(apiRoot) {
   const {
     body: { results: subscriptions },
   } = await apiRoot
