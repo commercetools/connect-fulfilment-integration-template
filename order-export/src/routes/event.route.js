@@ -10,7 +10,6 @@ import {
   HTTP_STATUS_SUCCESS_ACCEPTED,
   HTTP_STATUS_BAD_REQUEST,
 } from '../constants/http.status.constants.js';
-import { getMessageById } from '../clients/messages.query.client.js';
 
 const eventRouter = Router();
 
@@ -39,21 +38,12 @@ async function eventHandler(request, response) {
     // messageBody: MessageDeliveryPayload
     const messageBody = decodeToJson(encodedMessageBody);
 
-    // Docs: https://docs.commercetools.com/api/projects/messages#message
-    // message: Message
-    let message;
-    if (messageBody?.payloadNotIncluded) {
-      message = getMessageById(messageBody.id);
-    } else {
-      message = messageBody;
-    }
-
-    switch (message.type) {
+    switch (messageBody.type) {
       case 'OrderCreated':
-        orderCreated(request, response, message);
+        orderCreated(request, response, messageBody);
         break;
       case 'ReturnInfoAdded':
-        returnInfo(request, response, message);
+        returnInfo(request, response, messageBody);
         break;
       default:
         throw new CustomError(
