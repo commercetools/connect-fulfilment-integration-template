@@ -1,6 +1,18 @@
 import { logger } from '../utils/logger.utils.js';
+import { getOrderById } from '../clients/orders.query.client.js';
 
 export const returnInfo = async (request, response, message) => {
+  let order;
+  let returnInfo;
+
+  if (message.payloadNotIncluded) {
+    order = await getOrderById(message.resource.id);
+    returnInfo = order.returnInfo;
+  } else {
+    order = message.order;
+    returnInfo = message.returnInfo;
+  }
+
   // Docs: https://docs.commercetools.com/api/projects/messages#order-created
   const messageData = {
     id: message.id,
@@ -10,16 +22,15 @@ export const returnInfo = async (request, response, message) => {
     resourceVersion: message.resourceVersion,
     type: message.type,
     resourceUserProvidedIdentifiers: message.resourceUserProvidedIdentifiers,
-    returnInfo: message.returnInfo,
     createdAt: message.createdAt,
     lastModifiedAt: message.lastModifiedAt,
   };
 
   // Docs: https://docs.commercetools.com/api/projects/messages#return-info-added
   const returnInfoData = {
-    items: message.returnInfo.items,
-    returnTrackingId: message.returnInfo.returnTrackingId,
-    returnDate: message.returnInfo.returnDate,
+    items: returnInfo.items,
+    returnTrackingId: returnInfo.returnTrackingId,
+    returnDate: returnInfo.returnDate,
   };
 
   logger.info(
