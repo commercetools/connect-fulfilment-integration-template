@@ -1,9 +1,9 @@
 import { createApiRoot } from './create.client.js';
 
-export async function getMessageById(messageId) {
+export async function getProductById(productId) {
   return await createApiRoot()
-    .messages()
-    .withId({ ID: messageId })
+    .productProjections()
+    .withId({ ID: productId })
     .get()
     .execute()
     .then((response) => response.body);
