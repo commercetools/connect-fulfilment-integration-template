@@ -5,7 +5,7 @@ import {
   HTTP_STATUS_SUCCESS_ACCEPTED,
 } from '../constants/http.status.constants.js';
 import { decodeToJson } from '../utils/decoder.utils.js';
-import { getMessageById } from '../clients/messages.query.client.js';
+import { getProductById } from '../clients/products.query.client.js';
 
 export const productPublishedHandler = async (request, response) => {
   try {
@@ -31,50 +31,32 @@ export const productPublishedHandler = async (request, response) => {
     // Docs: https://docs.commercetools.com/api/projects/subscriptions#messagedeliverypayload
     // messageBody: MessageDeliveryPayload
     const messageBody = decodeToJson(encodedMessageBody);
-
-    // Docs: https://docs.commercetools.com/api/projects/messages#message
-    // message: Message
-    let message;
-    if (messageBody?.payloadNotIncluded) {
-      message = getMessageById(messageBody.id);
-    } else {
-      message = messageBody;
-    }
-
-    if (message.type !== 'productPublished') {
+    if (messageBody.type !== 'productPublished') {
       throw new CustomError(
-        HTTP_STATUS_SUCCESS_ACCEPTED,
-        'Message type is not supported'
+          HTTP_STATUS_SUCCESS_ACCEPTED,
+          'Message type is not supported'
       );
     }
 
-    // Docs: https://docs.commercetools.com/api/projects/messages#product-published
-    const messageData = {
-      id: message.id,
-      version: message.version,
-      sequenceNumber: message.sequenceNumber,
-      resource: message.resource,
-      resourceVersion: message.resourceVersion,
-      type: message.type,
-      removedImageUrls: message.removedImageUrls,
-      productProjection: message.productProjection,
-      scope: message.scope,
-      createdAt: message.createdAt,
-      lastModifiedAt: message.lastModifiedAt,
-    };
+    let productProjection;
+    if (messageBody.payloadNotIncluded) {
+      productProjection = await getProductById(messageBody.resource.id);
+    } else {
+      productProjection = messageBody.productProjection;
+    }
 
     // Docs: https://docs.commercetools.com/api/projects/productProjections#productprojection
     const productProjectionsData = {
-      id: message.productProjection.id,
-      version: message.productProjection.version,
-      productType: message.productProjection.productType,
-      name: message.productProjection.name,
-      slug: message.productProjection.slug,
-      categories: message.productProjection.categories,
-      masterVariant: message.productProjection.masterVariant,
-      variants: message.productProjection.variants,
-      createdAt: message.productProjection.createdAt,
-      lastModifiedAt: message.productProjection.lastModifiedAt,
+      id: productProjection.id,
+      version: productProjection.version,
+      productType: productProjection.productType,
+      name: productProjection.name,
+      slug: productProjection.slug,
+      categories: productProjection.categories,
+      masterVariant: productProjection.masterVariant,
+      variants: productProjection.variants,
+      createdAt: productProjection.createdAt,
+      lastModifiedAt: productProjection.lastModifiedAt,
       // ...
     };
 
@@ -82,7 +64,7 @@ export const productPublishedHandler = async (request, response) => {
     //  call appropriate 3rd party methods.
 
     logger.info(
-      `Process product published event id: ${messageData.id} product name: ${productProjectionsData.name}`
+      `Process product published event id: ${productProjection.id} product name: ${productProjectionsData.name}`
     );
     response.status(200).send();
   } catch (err) {
