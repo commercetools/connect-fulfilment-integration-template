@@ -21,13 +21,13 @@
   "devDependencies": {
     "@babel/preset-env": "^7.21.5",
     "babel-jest": "^29.5.0",
-    "eslint": "^8.46.0",
+    "eslint": "^9.39.2",
     "jest": "^29.5.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^3.1.11",
     "prettier": "^2.8.8"
   },
   "dependencies": {
-    "@commercetools-backend/loggers": "^21.19.0",
+    "@commercetools-backend/loggers": "^25.1.0",
     "@commercetools/platform-sdk": "^4.1.0",
     "@commercetools/sdk-client-v2": "^2.0.1",
     "body-parser": "^1.20.1",
@@ -35,5 +35,8 @@
     "express": "^4.19.2",
     "supertest": "^7.0.0",
     "validator": "^13.7.0"
+  },
+  "overrides": {
+    "lodash": "^4.17.23"
   }
 }
