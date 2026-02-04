@@ -1,6 +1,6 @@
-import { expect, describe, afterAll, it } from '@jest/globals';
+import { expect, describe, it } from '@jest/globals';
 import request from 'supertest';
-import server from '../../src/index.js';
+import app from '../../src/app.js';
 import {
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_SUCCESS_ACCEPTED,
@@ -13,7 +13,7 @@ describe('Test inventory.import.controller.js', () => {
     let response = {};
     // Send request to the connector application with following code snippet.
 
-    response = await request(server).post(`/`);
+    response = await request(app).post(`/`);
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(404);
   });
@@ -22,7 +22,7 @@ describe('Test inventory.import.controller.js', () => {
     let response = {};
     // Send request to the connector application with following code snippet.
     let payload = {};
-    response = await request(server).post(`/inventory`).send(payload);
+    response = await request(app).post(`/inventory`).send(payload);
 
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(HTTP_STATUS_BAD_REQUEST);
@@ -31,7 +31,7 @@ describe('Test inventory.import.controller.js', () => {
   it(`When payload body exists without correct inventory information, it should returns 400 http status`, async () => {
     let response = {};
     let payload = {};
-    response = await request(server).post(`/inventory`).send(payload);
+    response = await request(app).post(`/inventory`).send(payload);
 
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(HTTP_STATUS_BAD_REQUEST);
@@ -46,20 +46,12 @@ describe('Test inventory.import.controller.js', () => {
       .get()
       .execute();
 
-    response = await request(server)
+    response = await request(app)
       .post(`/inventory`)
       .send(inventoryRequestPayload);
 
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(HTTP_STATUS_SUCCESS_ACCEPTED);
     expect(response.body.message).toEqual('successfully created/updated');
-  });
-
-  afterAll(() => {
-    // Enable the function below to close the application on server once all test cases are executed.
-
-    if (server) {
-      server.close();
-    }
   });
 });

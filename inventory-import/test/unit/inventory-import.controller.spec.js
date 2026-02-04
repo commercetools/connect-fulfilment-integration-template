@@ -1,8 +1,8 @@
-import { expect, describe, it, jest, afterAll } from '@jest/globals';
+import { expect, describe, it, jest } from '@jest/globals';
 import configUtil from '../../src/utils/config.util.js';
 import { HTTP_STATUS_BAD_REQUEST } from '../../src/constants/http.status.constants.js';
 import request from 'supertest';
-import server from '../../src/index.js';
+import app from '../../src/app.js';
 
 describe('inventory-import.controller.spec', () => {
   it(`should return 400 HTTP status when message data is missing in incoming request.`, async () => {
@@ -17,14 +17,8 @@ describe('inventory-import.controller.spec', () => {
       .spyOn(configUtil, 'readConfiguration')
       .mockImplementation(({ success }) => success(dummyConfig));
 
-    const response = await request(server).post(`/inventory`).send({});
+    const response = await request(app).post(`/inventory`).send({});
 
     expect(response.body.statusCode).toEqual(HTTP_STATUS_BAD_REQUEST);
-  });
-
-  afterAll(() => {
-    if (server) {
-      server.close();
-    }
   });
 });
