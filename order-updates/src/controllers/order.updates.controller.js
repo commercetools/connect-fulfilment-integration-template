@@ -11,18 +11,14 @@ import {
 } from '../clients/query.client.js';
 import { logger } from '../utils/logger.utils.js';
 
-const badRequestMessage = 'Missing order details or deliveryInfo/returnInfo information in the request body.';
+const badRequestMessage =
+  'Missing order details or deliveryInfo/returnInfo information in the request body.';
 
 function getInvalidRequestResponse(response) {
   logger.info(badRequestMessage);
   return response
     .status(HTTP_STATUS_BAD_REQUEST)
-    .send(
-      new CustomError(
-        HTTP_STATUS_BAD_REQUEST,
-        badRequestMessage
-      )
-    );
+    .send(new CustomError(HTTP_STATUS_BAD_REQUEST, badRequestMessage));
 }
 
 async function syncOrderUpdates(orderUpdatesRequest) {

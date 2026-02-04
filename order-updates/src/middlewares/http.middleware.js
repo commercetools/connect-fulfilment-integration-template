@@ -6,7 +6,7 @@ import configUtils from '../utils/config.util.js';
 export const getHttpMiddlewareOptions = () => {
   return {
     host: `https://api.${
-        configUtils.readConfiguration().region
+      configUtils.readConfiguration().region
     }.commercetools.com`,
   };
 };
