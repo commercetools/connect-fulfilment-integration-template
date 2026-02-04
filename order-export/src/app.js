@@ -10,8 +10,8 @@ import EventRoutes from './routes/event.route.js';
 const app = express();
 
 // Define configurations
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 
 // Define routes
 app.use('/order-export', EventRoutes);
