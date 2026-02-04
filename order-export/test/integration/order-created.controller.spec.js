@@ -1,6 +1,6 @@
-import { expect, describe, afterAll, it } from '@jest/globals';
+import { expect, describe, it } from '@jest/globals';
 import request from 'supertest';
-import server from '../../src/index.js';
+import app from '../../src/app.js';
 import { HTTP_STATUS_BAD_REQUEST } from '../../src/constants/http.status.constants.js';
 
 /** Reminder : Please put mandatory environment variables in the settings of your github repository **/
@@ -9,7 +9,7 @@ describe('Test order-created.import.controller.js', () => {
     let response = {};
     // Send request to the connector application with following code snippet.
 
-    response = await request(server).post(`/`);
+    response = await request(app).post(`/`);
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(404);
   });
@@ -18,17 +18,9 @@ describe('Test order-created.import.controller.js', () => {
     let response = {};
     // Send request to the connector application with following code snippet.
     let payload = {};
-    response = await request(server).post(`/order-export`).send(payload);
+    response = await request(app).post(`/order-export`).send(payload);
 
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(HTTP_STATUS_BAD_REQUEST);
-  });
-
-  afterAll(() => {
-    // Enable the function below to close the application on server once all test cases are executed.
-
-    if (server) {
-      server.close();
-    }
   });
 });
