@@ -44,7 +44,8 @@ export async function updateOrderForDeliveryInfo(
   const maxRetries = 6;
   let orderVersion = orderToUpdate.version;
   let err;
-  for (let retries = 0; retries < maxRetries; retries++) {
+  let retries = 0;
+  while (retries < maxRetries) {
     try {
       return await updateOrder(
         orderToUpdate.id,
@@ -56,7 +57,7 @@ export async function updateOrderForDeliveryInfo(
       if (err.statusCode === 409) {
         const order = await getOrderById(orderUpdatesRequest.id);
         orderVersion = order.version;
-        retries++;
+        retries += 1;
       } else {
         throw e;
       }

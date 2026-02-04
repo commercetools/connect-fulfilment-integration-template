@@ -53,7 +53,8 @@ export async function updateInventoryEntry(
   const maxRetries = 6;
   let inventoryEntryVersion = inventoryEntryToBeUpdated.version;
   let err;
-  for (let retries = 0; retries < maxRetries; retries++) {
+  let retries = 0;
+  while (retries < maxRetries) {
     try {
       return await inventoryEntryUpdate(
         inventoryEntryToBeUpdated.id,
@@ -67,7 +68,7 @@ export async function updateInventoryEntry(
           inventoryEntryToBeUpdated.key
         );
         inventoryEntryVersion = inventoryEntry.version;
-        retries++;
+        retries += 1;
       } else {
         throw e;
       }
