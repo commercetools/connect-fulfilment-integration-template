@@ -58,7 +58,7 @@ export const inventoryHandler = async (request, response) => {
   }
 
   try {
-    await syncInventoryEntry(key, inventoryRequest, response);
+    await syncInventoryEntry(key, inventoryRequest);
   } catch (err) {
     const error = new CustomError(
       HTTP_STATUS_SERVER_ERROR,
