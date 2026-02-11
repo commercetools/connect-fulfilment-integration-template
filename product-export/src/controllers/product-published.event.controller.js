@@ -33,8 +33,8 @@ export const productPublishedHandler = async (request, response) => {
     const messageBody = decodeToJson(encodedMessageBody);
     if (messageBody.type !== 'productPublished') {
       throw new CustomError(
-          HTTP_STATUS_SUCCESS_ACCEPTED,
-          'Message type is not supported'
+        HTTP_STATUS_SUCCESS_ACCEPTED,
+        'Message type is not supported'
       );
     }
 

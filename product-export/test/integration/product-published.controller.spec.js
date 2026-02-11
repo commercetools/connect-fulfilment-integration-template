@@ -1,6 +1,6 @@
-import { expect, describe, afterAll, it } from '@jest/globals';
+import { expect, describe, it } from '@jest/globals';
 import request from 'supertest';
-import server from '../../src/index.js';
+import app from '../../src/app.js';
 import {
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_RESOURCE_NOT_FOUND,
@@ -12,7 +12,7 @@ describe('Test product-published.import.controller.js', () => {
     let response = {};
     // Send request to the connector application with following code snippet.
 
-    response = await request(server).post(`/`);
+    response = await request(app).post(`/`);
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(HTTP_STATUS_RESOURCE_NOT_FOUND);
   });
@@ -21,17 +21,9 @@ describe('Test product-published.import.controller.js', () => {
     let response = {};
     // Send request to the connector application with following code snippet.
     let payload = {};
-    response = await request(server).post(`/product-export`).send(payload);
+    response = await request(app).post(`/product-export`).send(payload);
 
     expect(response).toBeDefined();
     expect(response.statusCode).toEqual(HTTP_STATUS_BAD_REQUEST);
-  });
-
-  afterAll(() => {
-    // Enable the function below to close the application on server once all test cases are executed.
-
-    if (server) {
-      server.close();
-    }
   });
 });
